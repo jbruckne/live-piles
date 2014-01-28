@@ -1,21 +1,23 @@
 import os
+import sys
 import pygame
 import time
 import random
+from pygame.locals import *
+from framework import *
 
-class pyscope :
+class Pyscope:
     screen = None;
+    clock = None;
+    framework = None;
     
     def __init__(self):
-        "Ininitializes a new pygame screen using the framebuffer"
-        # Based on "Python GUI in Linux frame buffer"
-        # http://www.karoltomala.com/blog/?p=679
+        # Initialize a new pygame screen using the framebuffer
         disp_no = os.getenv("DISPLAY")
         if disp_no:
-            print "I'm running under X display = {0}".format(disp_no)
+            print "X display = {0}".format(disp_no)
         
         # Check which frame buffer drivers are available
-        # Start with fbcon since directfb hangs with composite output
         drivers = ['fbcon', 'directfb', 'svgalib']
         found = False
         for driver in drivers:
@@ -36,24 +38,55 @@ class pyscope :
         size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
         print "Framebuffer size: %d x %d" % (size[0], size[1])
         self.screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
+        
         # Clear the screen to start
         self.screen.fill((0, 0, 0))        
+        
         # Initialise font support
         pygame.font.init()
+        
         # Render the screen
         pygame.display.update()
-
+        
+        # Initialize the clock
+        self.clock = pygame.time.Clock()
+        
+        # Initialize the framework which will do all the work
+        self.framework = Framework()
+    
     def __del__(self):
         "Destructor to make sure pygame shuts down, etc."
-
-    def test(self):
-        # Fill the screen with red (255, 0, 0)
-        red = (255, 0, 0)
-        self.screen.fill(red)
+    
+    def draw(self):
+        self.framework.draw(self.screen)
+        
         # Update the display
         pygame.display.update()
 
+    def update(self):
+        # Main update loop
+        self.clock.tick(30)
+
+    def input(self, events):
+        # Input handling
+        for event in events:
+			
+			# Close button
+            if event.type == QUIT:
+                exit()
+            
+            # Key pressed
+            if event.type == KEYDOWN:
+				
+				# Escape key
+                if event.key == K_ESCAPE:
+                    exit()
+
 # Create an instance of the PyScope class
-scope = pyscope()
-scope.test()
-time.sleep(10)
+scope = Pyscope()
+
+# Application loop
+while True:
+    scope.input(pygame.event.get())
+    scope.update()
+    scope.draw()
