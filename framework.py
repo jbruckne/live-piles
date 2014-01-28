@@ -1,20 +1,34 @@
 import pygame
+import random
+import os
 
 SCREEN_DIMENSIONS = 0;
 PADDING = 32;
 TILE_WIDTH = 256;
 
 class Background:
-    bg = None;
+    bg = None
+    bgdir = ""
+    imgtime = 30 * 180
+    showntime = 0
     
-    def __init__(self, bg):
-        self.bg = bg;
+    def __init__(self, bgdir, w, h):
+        
+        self.bgdir = bgdir
+        self.w = w
+        self.h = h
+        self.randomBG()
     
     def update(self):
-        pass
+        self.showntime = (self.showntime + 1) % self.imgtime
+        if self.showntime is 0:
+            self.randomBG()
     
     def draw(self, screen):
         screen.blit(self.bg, (0, 0))
+    
+    def randomBG(self):
+        self.bg = pygame.transform.smoothscale(pygame.image.load(self.bgdir + random.choice(os.listdir(self.bgdir))), (self.w, self.h))
 
 class BasicTile:
     bgcolor = (0, 0, 0);
@@ -69,8 +83,7 @@ class Framework:
         TILE_WIDTH = SCREEN_HEIGHT / 4 - PADDING * 1.25;
         
         pygame.mouse.set_visible(False)
-        bg = pygame.transform.smoothscale(pygame.image.load("bg.jpg"), (w, h));
-        self.bg = Background(bg)
+        self.bg = Background("./bg/", w, h)
     
     def update(self):
         self.bg.update()
