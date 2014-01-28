@@ -14,7 +14,7 @@ class ClockTile(BasicTile):
         w = self.getw()
         h = self.geth()
         
-        myfont = pygame.font.SysFont("monospace", int(min(w, h) / 4.5))
+        myfont = pygame.font.SysFont("monospace", int(min(w, h*2) / 4.5))
         label = myfont.render(time.strftime('%I:%M:%S%p'), 1, (255,255,255))
         
         textx = x + 0.5 * (w - label.get_width())
