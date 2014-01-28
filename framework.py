@@ -5,14 +5,16 @@ PADDING = 32;
 TILE_WIDTH = 256;
 
 class Background:
-    bgcolor = (50, 50, 50)
+    bg = None;
+    
+    def __init__(self, bg):
+        self.bg = bg;
     
     def update(self):
         pass
     
     def draw(self, screen):
-        screen.fill(self.bgcolor)
-        pass
+        screen.blit(self.bg, (0, 0))
 
 class BasicTile:
     bgcolor = (0, 0, 0);
@@ -42,8 +44,12 @@ class BasicTile:
         y = self.gety()
         w = self.getw()
         h = self.geth()
-        screen.fill(self.bgcolor, pygame.Rect(x, y, w, h))
-
+        
+        s = pygame.Surface((w, h))
+        s.set_alpha(175)
+        s.fill(self.bgcolor, pygame.Rect(0, 0, w, h))
+        screen.blit(s, (x,y))
+        
 from tiles import *
 
 class Framework:
@@ -55,12 +61,16 @@ class Framework:
         global PADDING
         global TILE_WIDTH
         
-        SCREEN_HEIGHT = pygame.display.Info().current_h;
+        w = pygame.display.Info().current_w
+        h = pygame.display.Info().current_h
+        
+        SCREEN_HEIGHT = h;
         PADDING = SCREEN_HEIGHT * 0.03;
         TILE_WIDTH = SCREEN_HEIGHT / 4 - PADDING * 1.25;
         
         pygame.mouse.set_visible(False)
-        self.bg = Background()
+        bg = pygame.transform.smoothscale(pygame.image.load("bg.jpg"), (w, h));
+        self.bg = Background(bg)
     
     def update(self):
         self.bg.update()
