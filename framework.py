@@ -21,17 +21,30 @@ class BasicTile:
     def __init__(self, posx, posy, width, height, bgcolor):
         self.rect = pygame.Rect(posx, posy, width, height)
         self.bgcolor = bgcolor
-        
+    
+    def getx(self):
+        return self.rect.x * (TILE_WIDTH + PADDING) + PADDING
+    
+    def gety(self):
+        return self.rect.y * (TILE_WIDTH + PADDING) + PADDING
+    
+    def getw(self):
+        return self.rect.w * (TILE_WIDTH + PADDING) - PADDING
+    
+    def geth(self):
+        return self.rect.h * (TILE_WIDTH + PADDING) - PADDING
+    
     def update(self):
         pass
     
     def draw(self, screen):
-        x = self.rect.x * (TILE_WIDTH + PADDING) + PADDING
-        y = self.rect.y * (TILE_WIDTH + PADDING) + PADDING
-        w = self.rect.w * (TILE_WIDTH + PADDING) - PADDING
-        h = self.rect.h * (TILE_WIDTH + PADDING) - PADDING
+        x = self.getx()
+        y = self.gety()
+        w = self.getw()
+        h = self.geth()
         screen.fill(self.bgcolor, pygame.Rect(x, y, w, h))
-        pass
+
+from tiles import *
 
 class Framework:
     bg = None
@@ -49,11 +62,8 @@ class Framework:
         pygame.mouse.set_visible(False)
         self.bg = Background()
         
-        for x in range(3):
-            self.tiles.append(BasicTile(x, 0, 1, 1, (0, 0, 0)))
-            self.tiles.append(BasicTile(x, 3, 1, 1, (0, 0, 0)))
-            self.tiles.append(BasicTile(3, x, 1, 1, (0, 0, 0)))
-        self.tiles.append(BasicTile(0, 1, 3, 2, (0, 0, 255)))
+        for x in range(5):
+            self.tiles.append(ClockTile(x, x, 1, 1, (0, 0, 255)))
     
     def update(self):
         self.bg.update()
