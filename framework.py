@@ -61,9 +61,6 @@ class Framework:
         
         pygame.mouse.set_visible(False)
         self.bg = Background()
-        
-        for x in range(5):
-            self.tiles.append(ClockTile(x, x, 1, 1, (0, 0, 255)))
     
     def update(self):
         self.bg.update()
