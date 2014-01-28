@@ -66,6 +66,8 @@ class Pyscope:
         pygame.display.update()
 
     def update(self):
+        self.framework.update()
+        
         # Main update loop
         self.clock.tick(30)
 
