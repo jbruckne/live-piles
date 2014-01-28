@@ -5,6 +5,7 @@ import time
 import random
 from pygame.locals import *
 from framework import *
+import default;
 
 class Pyscope:
     screen = None;
@@ -53,6 +54,7 @@ class Pyscope:
         
         # Initialize the framework which will do all the work
         self.framework = Framework()
+        default.setup(self.framework)
     
     def __del__(self):
         "Destructor to make sure pygame shuts down, etc."

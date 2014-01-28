@@ -4,9 +4,6 @@ from framework import *
 
 class ClockTile(BasicTile):
     time = None;
-    
-    def update(self):
-        BasicTile.update(self)
         
     def draw(self, screen):
         BasicTile.draw(self, screen)
